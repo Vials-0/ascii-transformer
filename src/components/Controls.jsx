@@ -1,11 +1,44 @@
 export default function Controls({
     colors,
     width,
+    charset,
+    edgeThreshold,
     onColorChange,
-    onWidthChange
+    onWidthChange,
+    onCharsetChange,
+    onEdgeChange
 }) {
     return (
         <div className="controls">
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Character Set</span>
+                </div>
+                <select
+                    value={charset}
+                    onChange={(e) => onCharsetChange(e.target.value)}
+                >
+                    <option value="standard">@%#*+=-:. </option>
+                    <option value="dense">@#$%&</option>
+                    <option value="minimal">.- </option>
+                    <option value="blocks">█▓▒░</option>
+                </select>
+            </div>
+
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Edge Sensitivity</span>
+                    <span className="value">{edgeThreshold}</span>
+                </div>
+                <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    value={edgeThreshold}
+                    onChange={(e) => onEdgeChange(parseInt(e.target.value))}
+                />
+            </div>
+
             <div className="control-group">
                 <div className="control-header">
                     <span>Color Levels</span>

@@ -7,10 +7,14 @@ export default function App() {
   const {
     colors,
     width,
+    charset,
+    edgeThreshold,
     imageSrc,
     setFile,
     updateColors,
-    updateWidth
+    updateWidth,
+    updateCharset,
+    updateEdge
   } = useAscii();
 
   return (
@@ -21,8 +25,12 @@ export default function App() {
         <Controls
           colors={colors}
           width={width}
+          charset={charset}
+          edgeThreshold={edgeThreshold}
           onColorChange={updateColors}
           onWidthChange={updateWidth}
+          onCharsetChange={updateCharset}
+          onEdgeChange={updateEdge}
         />
 
         <DropZone onFile={setFile} />
