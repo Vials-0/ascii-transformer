@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+  }
+  
+  .app {
+    padding: 20px;
+  }
+  
+  .controls {
+    margin: 20px;
+  }
+  
+  .controls div {
+    margin: 10px;
+  }
+  
+  input[type="range"] {
+    width: 200px;
+  }
+  
+  .drop {
+    border: 2px dashed #555;
+    padding: 50px;
+    margin: 30px;
+    cursor: pointer;
+  }
+  
+  .drop:hover {
+    border-color: #888;
+  }
+  
+  img {
+    max-width: 90%;
+    margin-top: 20px;
+  }
