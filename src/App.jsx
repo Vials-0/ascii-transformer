@@ -8,24 +8,29 @@ export default function App() {
     colors,
     width,
     imageSrc,
-    canvasRef,
     setFile,
     updateColors,
     updateWidth
   } = useAscii();
 
   return (
-    <div className="app">
-      <h1>ASCII Generator</h1>
-      <Controls
-        colors={colors}
-        width={width}
-        onColorChange={updateColors}
-        onWidthChange={updateWidth}
-      />
-      <DropZone onFile={setFile} />
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-      <ImagePreview src={imageSrc} />
+    <div className="app layout">
+      <div className="sidebar">
+        <h1>ASCII Generator</h1>
+
+        <Controls
+          colors={colors}
+          width={width}
+          onColorChange={updateColors}
+          onWidthChange={updateWidth}
+        />
+
+        <DropZone onFile={setFile} />
+      </div>
+
+      <div className="preview">
+        <ImagePreview src={imageSrc} />
+      </div>
     </div>
   );
 }

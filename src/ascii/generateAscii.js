@@ -57,7 +57,7 @@ function sobel(gray, width, height) {
   return edges;
 }
 
-export function generateASCII(canvas, img, width, colors) {
+export function generateASCII(img, width, colors) {
   const aspect = img.height / img.width;
   const height = Math.floor(width * aspect);
 
@@ -76,6 +76,7 @@ export function generateASCII(canvas, img, width, colors) {
 
   const aspectCorrection = charHeight / charWidth;
 
+  const canvas = document.createElement("canvas");
   canvas.width = width * charWidth;
   canvas.height = height * charHeight / aspectCorrection;
 
@@ -102,7 +103,6 @@ export function generateASCII(canvas, img, width, colors) {
       b = quantize(b, colors);
 
       const brightness = getBrightness(r, g, b);
-
       const edgeVal = edges[y * width + x];
 
       let char;

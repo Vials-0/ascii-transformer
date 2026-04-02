@@ -7,19 +7,13 @@ export default function useAscii() {
   const [imageSrc, setImageSrc] = useState(null);
 
   const fileRef = useRef(null);
-  const canvasRef = useRef(null);
 
   const processImage = (file, newColors = colors, newWidth = width) => {
     const img = new Image();
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
-      const result = generateASCII(
-        canvasRef.current,
-        img,
-        newWidth,
-        newColors
-      );
+      const result = generateASCII(img, newWidth, newColors);
       setImageSrc(result);
     };
   };
@@ -44,7 +38,6 @@ export default function useAscii() {
     colors,
     width,
     imageSrc,
-    canvasRef,
     setFile,
     updateColors,
     updateWidth
