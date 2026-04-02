@@ -6,8 +6,11 @@ export default function Controls({
 }) {
     return (
         <div className="controls">
-            <div>
-                <label>Color Levels: {colors}</label>
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Color Levels</span>
+                    <span className="value">{colors}</span>
+                </div>
                 <input
                     type="range"
                     min="2"
@@ -17,8 +20,11 @@ export default function Controls({
                 />
             </div>
 
-            <div>
-                <label>Resolution: {width}</label>
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Resolution</span>
+                    <span className="value">{width}</span>
+                </div>
                 <input
                     type="range"
                     min="50"
