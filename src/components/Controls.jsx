@@ -1,3 +1,10 @@
+const CHARSET_OPTIONS = [
+    { key: "standard", label: "Standard" },
+    { key: "dense", label: "Dense" },
+    { key: "minimal", label: "Minimal" },
+    { key: "blocks", label: "Blocks" }
+];
+
 export default function Controls({
     colors,
     width,
@@ -14,15 +21,20 @@ export default function Controls({
                 <div className="control-header">
                     <span>Character Set</span>
                 </div>
-                <select
-                    value={charset}
-                    onChange={(e) => onCharsetChange(e.target.value)}
-                >
-                    <option value="standard">@%#*+=-:. </option>
-                    <option value="dense">@#$%&</option>
-                    <option value="minimal">.- </option>
-                    <option value="blocks">█▓▒░</option>
-                </select>
+
+                <div className="button-group">
+                    {CHARSET_OPTIONS.map((opt) => (
+                        <button
+                            key={opt.key}
+                            className={
+                                "charset-btn " + (charset === opt.key ? "active" : "")
+                            }
+                            onClick={() => onCharsetChange(opt.key)}
+                        >
+                            {opt.label}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             <div className="control-group">
