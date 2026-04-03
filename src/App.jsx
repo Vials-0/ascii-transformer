@@ -9,12 +9,16 @@ export default function App() {
     width,
     charset,
     edgeThreshold,
+    brightness,
+    contrast,
     imageSrc,
     setFile,
     updateColors,
     updateWidth,
     updateCharset,
-    updateEdge
+    updateEdge,
+    updateBrightness,
+    updateContrast
   } = useAscii();
 
   return (
@@ -27,10 +31,14 @@ export default function App() {
           width={width}
           charset={charset}
           edgeThreshold={edgeThreshold}
+          brightness={brightness}
+          contrast={contrast}
           onColorChange={updateColors}
           onWidthChange={updateWidth}
           onCharsetChange={updateCharset}
           onEdgeChange={updateEdge}
+          onBrightnessChange={updateBrightness}
+          onContrastChange={updateContrast}
         />
 
         <DropZone onFile={setFile} />

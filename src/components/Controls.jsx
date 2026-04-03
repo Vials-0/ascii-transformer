@@ -10,10 +10,14 @@ export default function Controls({
     width,
     charset,
     edgeThreshold,
+    brightness,
+    contrast,
     onColorChange,
     onWidthChange,
     onCharsetChange,
-    onEdgeChange
+    onEdgeChange,
+    onBrightnessChange,
+    onContrastChange
 }) {
     return (
         <div className="controls">
@@ -21,7 +25,6 @@ export default function Controls({
                 <div className="control-header">
                     <span>Character Set</span>
                 </div>
-
                 <div className="button-group">
                     {CHARSET_OPTIONS.map((opt) => (
                         <button
@@ -48,6 +51,34 @@ export default function Controls({
                     max="200"
                     value={edgeThreshold}
                     onChange={(e) => onEdgeChange(parseInt(e.target.value))}
+                />
+            </div>
+
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Brightness</span>
+                    <span className="value">{brightness}</span>
+                </div>
+                <input
+                    type="range"
+                    min="-100"
+                    max="100"
+                    value={brightness}
+                    onChange={(e) => onBrightnessChange(parseInt(e.target.value))}
+                />
+            </div>
+
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Contrast</span>
+                    <span className="value">{contrast}</span>
+                </div>
+                <input
+                    type="range"
+                    min="-100"
+                    max="100"
+                    value={contrast}
+                    onChange={(e) => onContrastChange(parseInt(e.target.value))}
                 />
             </div>
 

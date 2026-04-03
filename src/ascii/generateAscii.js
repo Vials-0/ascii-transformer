@@ -5,7 +5,7 @@ const CHARSETS = {
     blocks: "█▓▒░"
   };
   
-  const EDGE_CHARS = "@#%";
+    const EDGE_CHARS = "@#%";
   
   const charWidth = 8;
   const charHeight = 12;
@@ -17,6 +17,12 @@ const CHARSETS = {
   
   function getBrightness(r, g, b) {
     return 0.299 * r + 0.587 * g + 0.114 * b;
+  }
+  
+  function adjustColor(value, brightness, contrast) {
+    const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+    let result = factor * (value - 128) + 128 + brightness;
+    return Math.max(0, Math.min(255, result));
   }
   
   function computeGrayscale(data, width, height) {
@@ -62,7 +68,15 @@ const CHARSETS = {
     return edges;
   }
   
-  export function generateASCII(img, width, colors, charsetKey, edgeThreshold) {
+  export function generateASCII(
+    img,
+    width,
+    colors,
+    charsetKey,
+    edgeThreshold,
+    brightness,
+    contrast
+  ) {
     const ASCII_CHARS = CHARSETS[charsetKey] || CHARSETS.standard;
   
     const aspect = img.height / img.width;
@@ -99,27 +113,27 @@ const CHARSETS = {
       for (let x = 0; x < width; x++) {
         const idx = (y * width + x) * 4;
   
-        let r = imageData[idx];
-        let g = imageData[idx + 1];
-        let b = imageData[idx + 2];
+        let r = adjustColor(imageData[idx], brightness, contrast);
+        let g = adjustColor(imageData[idx + 1], brightness, contrast);
+        let b = adjustColor(imageData[idx + 2], brightness, contrast);
   
         r = quantize(r, colors);
         g = quantize(g, colors);
         b = quantize(b, colors);
   
-        const brightness = getBrightness(r, g, b);
+        const brightnessVal = getBrightness(r, g, b);
         const edgeVal = edges[y * width + x];
   
         let char;
   
         if (edgeVal > edgeThreshold) {
           const edgeIndex = Math.floor(
-            (brightness / 255) * (EDGE_CHARS.length - 1)
+            (brightnessVal / 255) * (EDGE_CHARS.length - 1)
           );
           char = EDGE_CHARS[edgeIndex];
         } else {
           const charIndex = Math.floor(
-            (brightness / 255) * (ASCII_CHARS.length - 1)
+            (brightnessVal / 255) * (ASCII_CHARS.length - 1)
           );
           char = ASCII_CHARS[charIndex];
         }

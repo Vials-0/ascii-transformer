@@ -6,6 +6,8 @@ export default function useAscii() {
   const [width, setWidth] = useState(120);
   const [charset, setCharset] = useState("standard");
   const [edgeThreshold, setEdgeThreshold] = useState(80);
+  const [brightness, setBrightness] = useState(0);
+  const [contrast, setContrast] = useState(0);
   const [imageSrc, setImageSrc] = useState(null);
 
   const fileRef = useRef(null);
@@ -15,7 +17,9 @@ export default function useAscii() {
     newColors = colors,
     newWidth = width,
     newCharset = charset,
-    newEdge = edgeThreshold
+    newEdge = edgeThreshold,
+    newBrightness = brightness,
+    newContrast = contrast
   ) => {
     const img = new Image();
     img.src = URL.createObjectURL(file);
@@ -26,7 +30,9 @@ export default function useAscii() {
         newWidth,
         newColors,
         newCharset,
-        newEdge
+        newEdge,
+        newBrightness,
+        newContrast
       );
       setImageSrc(result);
     };
@@ -41,25 +47,37 @@ export default function useAscii() {
   const updateColors = (val) => {
     setColors(val);
     if (fileRef.current)
-      processImage(fileRef.current, val, width, charset, edgeThreshold);
+      processImage(fileRef.current, val, width, charset, edgeThreshold, brightness, contrast);
   };
 
   const updateWidth = (val) => {
     setWidth(val);
     if (fileRef.current)
-      processImage(fileRef.current, colors, val, charset, edgeThreshold);
+      processImage(fileRef.current, colors, val, charset, edgeThreshold, brightness, contrast);
   };
 
   const updateCharset = (val) => {
     setCharset(val);
     if (fileRef.current)
-      processImage(fileRef.current, colors, width, val, edgeThreshold);
+      processImage(fileRef.current, colors, width, val, edgeThreshold, brightness, contrast);
   };
 
   const updateEdge = (val) => {
     setEdgeThreshold(val);
     if (fileRef.current)
-      processImage(fileRef.current, colors, width, charset, val);
+      processImage(fileRef.current, colors, width, charset, val, brightness, contrast);
+  };
+
+  const updateBrightness = (val) => {
+    setBrightness(val);
+    if (fileRef.current)
+      processImage(fileRef.current, colors, width, charset, edgeThreshold, val, contrast);
+  };
+
+  const updateContrast = (val) => {
+    setContrast(val);
+    if (fileRef.current)
+      processImage(fileRef.current, colors, width, charset, edgeThreshold, brightness, val);
   };
 
   return {
@@ -67,11 +85,15 @@ export default function useAscii() {
     width,
     charset,
     edgeThreshold,
+    brightness,
+    contrast,
     imageSrc,
     setFile,
     updateColors,
     updateWidth,
     updateCharset,
-    updateEdge
+    updateEdge,
+    updateBrightness,
+    updateContrast
   };
 }
