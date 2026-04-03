@@ -45,7 +45,8 @@ export default function useAscii() {
         finalImage = await applyTextOverlay(
           finalImage,
           overlay.text,
-          overlay.position
+          overlay.position,
+          overlay.color
         );
       }
 
@@ -67,7 +68,7 @@ export default function useAscii() {
   const addOverlay = () => {
     const newOverlays = [
       ...overlays,
-      { text: "", position: "center", expanded: true }
+      { text: "", position: "center", color: "#ffffff", expanded: true }
     ];
     setOverlays(newOverlays);
     rerender({ overlays: newOverlays });

@@ -28,6 +28,21 @@ export default function TextOverlayControls({
                                 }
                             />
 
+                            <div className="overlay-row">
+                                <label className="color-label">Color</label>
+                                <input
+                                    type="color"
+                                    value={overlay.color}
+                                    className="color-picker"
+                                    onChange={(e) =>
+                                        onUpdateOverlay(index, {
+                                            ...overlay,
+                                            color: e.target.value
+                                        })
+                                    }
+                                />
+                            </div>
+
                             <div className="button-group">
                                 {["top-left", "top-right", "bottom-left", "bottom-right", "center"].map(
                                     (pos) => (
@@ -71,6 +86,11 @@ export default function TextOverlayControls({
                             <span className="overlay-text">
                                 {overlay.text || "Empty text"}
                             </span>
+
+                            <div
+                                className="color-indicator"
+                                style={{ background: overlay.color }}
+                            />
 
                             <div className="overlay-preview-actions">
                                 <button
