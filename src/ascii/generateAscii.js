@@ -67,10 +67,16 @@ function sobel(gray, width, height) {
     return { edges, angles };
 }
 
+function safeChar(str, index) {
+    if (!str || str.length === 0) return "@";
+    if (!Number.isFinite(index)) return str[0];
+    return str[Math.max(0, Math.min(str.length - 1, index))];
+}
+
 function pickFromSet(set, brightness) {
     if (brightness < 40) return "@";
     const index = Math.floor((brightness / 255) * (set.length - 1));
-    return set[index];
+    return safeChar(set, index);
 }
 
 function getDirectionalChar(angle, brightness) {
@@ -152,25 +158,27 @@ export function generateASCII(
 
             const brightness = getBrightness(r, g, b);
 
-            if (brightness < 30) {
-                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                ctx.fillText("@", x * charWidth, y * (charHeight / aspectCorrection));
-                continue;
-            }
-
-            const edgeVal = edges[y * safeWidth + x];
-            const angle = angles[y * safeWidth + x];
-
             let char;
 
-            if (edgeVal > strongEdgeThreshold) {
-                char = getDirectionalChar(angle, brightness);
-            } else if (edgeVal > edgeThreshold) {
-                const edgeIndex = Math.floor((brightness / 255) * (EDGE_CHARS.length - 1));
-                char = EDGE_CHARS[edgeIndex];
+            if (brightness < 30) {
+                char = "@";
             } else {
-                const charIndex = Math.floor((brightness / 255) * (ASCII_CHARS.length - 1));
-                char = ASCII_CHARS[charIndex];
+                const edgeVal = edges[y * safeWidth + x];
+                const angle = angles[y * safeWidth + x];
+
+                if (edgeVal > strongEdgeThreshold) {
+                    char = getDirectionalChar(angle, brightness);
+                } else if (edgeVal > edgeThreshold) {
+                    const edgeIndex = Math.floor((brightness / 255) * (EDGE_CHARS.length - 1));
+                    char = safeChar(EDGE_CHARS, edgeIndex);
+                } else {
+                    const charIndex = Math.floor((brightness / 255) * (ASCII_CHARS.length - 1));
+                    char = safeChar(ASCII_CHARS, charIndex);
+                }
+            }
+
+            if (!char || char === undefined) {
+                char = "@";
             }
 
             ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
