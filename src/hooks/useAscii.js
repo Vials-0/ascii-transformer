@@ -9,9 +9,9 @@ export default function useAscii() {
     const [edgeThreshold, setEdgeThreshold] = useState(100);
     const [brightness, setBrightness] = useState(0);
     const [contrast, setContrast] = useState(0);
+    const [scale, setScale] = useState(1);
 
     const [overlays, setOverlays] = useState([]);
-
     const [imageSrc, setImageSrc] = useState(null);
 
     const fileRef = useRef(null);
@@ -31,7 +31,8 @@ export default function useAscii() {
                 opts.charset ?? charset,
                 opts.edgeThreshold ?? edgeThreshold,
                 opts.brightness ?? brightness,
-                opts.contrast ?? contrast
+                opts.contrast ?? contrast,
+                opts.scale ?? scale
             );
 
             if (!ascii) return;
@@ -47,7 +48,8 @@ export default function useAscii() {
                     finalImage,
                     overlay.text,
                     overlay.position,
-                    overlay.color
+                    overlay.color,
+                    opts.scale ?? scale
                 );
             }
 
@@ -73,18 +75,18 @@ export default function useAscii() {
         processImage(file);
     };
 
-    const updateOverlay = (index, updated) => {
-        const newOverlays = [...overlays];
-        newOverlays[index] = updated;
-        setOverlays(newOverlays);
-        scheduleRender({ overlays: newOverlays });
-    };
-
     const addOverlay = () => {
         const newOverlays = [
             ...overlays,
             { text: "", position: "center", color: "#ffffff", expanded: true }
         ];
+        setOverlays(newOverlays);
+        scheduleRender({ overlays: newOverlays });
+    };
+
+    const updateOverlay = (index, updated) => {
+        const newOverlays = [...overlays];
+        newOverlays[index] = updated;
         setOverlays(newOverlays);
         scheduleRender({ overlays: newOverlays });
     };
@@ -111,6 +113,7 @@ export default function useAscii() {
         edgeThreshold,
         brightness,
         contrast,
+        scale,
         overlays,
         imageSrc,
         canvasRef,
@@ -139,6 +142,10 @@ export default function useAscii() {
         updateContrast: (v) => {
             setContrast(v);
             scheduleRender({ contrast: v });
+        },
+        updateScale: (v) => {
+            setScale(v);
+            scheduleRender({ scale: v });
         },
 
         addOverlay,

@@ -12,12 +12,14 @@ export default function Controls({
     edgeThreshold,
     brightness,
     contrast,
+    scale,
     onColorChange,
     onWidthChange,
     onCharsetChange,
     onEdgeChange,
     onBrightnessChange,
-    onContrastChange
+    onContrastChange,
+    onScaleChange
 }) {
     return (
         <div className="controls">
@@ -108,6 +110,27 @@ export default function Controls({
                     value={width}
                     onChange={(e) => onWidthChange(parseInt(e.target.value))}
                 />
+            </div>
+
+            {/* ✅ NEW: Scale buttons (placed exactly after sliders) */}
+            <div className="control-group">
+                <div className="control-header">
+                    <span>Scale</span>
+                    <span className="value">{scale}x</span>
+                </div>
+                <div className="button-group">
+                    {[1, 2, 3, 4].map((s) => (
+                        <button
+                            key={s}
+                            className={
+                                "charset-btn " + (scale === s ? "active" : "")
+                            }
+                            onClick={() => onScaleChange(s)}
+                        >
+                            {s}x
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

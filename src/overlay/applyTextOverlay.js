@@ -1,4 +1,4 @@
-export function applyTextOverlay(imageSrc, text, position, color = "#ffffff") {
+export function applyTextOverlay(imageSrc, text, position, color = "#ffffff", scale = 1) {
     if (!text) return imageSrc;
 
     return new Promise((resolve) => {
@@ -14,14 +14,15 @@ export function applyTextOverlay(imageSrc, text, position, color = "#ffffff") {
 
             ctx.drawImage(img, 0, 0);
 
-            const fontSize = Math.floor(canvas.width / 15);
+            const baseFontSize = Math.floor(canvas.width / 15);
+            const fontSize = baseFontSize;
+            const padding = 20 * scale;
+
             ctx.font = `bold ${fontSize}px sans-serif`;
             ctx.fillStyle = color;
             ctx.strokeStyle = "black";
             ctx.lineWidth = 4;
             ctx.textBaseline = "top";
-
-            const padding = 20;
 
             let x = padding;
             let y = padding;

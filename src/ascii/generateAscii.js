@@ -98,7 +98,8 @@ export function generateASCII(
     charsetKey,
     edgeThreshold,
     brightnessAdjust,
-    contrastAdjust
+    contrastAdjust,
+    scale = 1
 ) {
     if (!canvas || !img || !img.width || !img.height) return null;
 
@@ -123,16 +124,20 @@ export function generateASCII(
 
     const aspectCorrection = charHeight / charWidth;
 
-    canvas.width = safeWidth * charWidth;
-    canvas.height = height * charHeight / aspectCorrection;
+    const baseWidth = safeWidth * charWidth;
+    const baseHeight = height * charHeight / aspectCorrection;
 
-    const ctx = canvas.getContext("2d");
+    const renderCanvas = document.createElement("canvas");
+    const rctx = renderCanvas.getContext("2d");
 
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    renderCanvas.width = baseWidth;
+    renderCanvas.height = baseHeight;
 
-    ctx.font = `${charHeight}px monospace`;
-    ctx.textBaseline = "top";
+    rctx.fillStyle = "black";
+    rctx.fillRect(0, 0, baseWidth, baseHeight);
+
+    rctx.font = `${charHeight}px monospace`;
+    rctx.textBaseline = "top";
 
     const strongEdgeThreshold = edgeThreshold * 1.8;
 
@@ -177,19 +182,35 @@ export function generateASCII(
                 }
             }
 
-            if (!char || char === undefined) {
-                char = "@";
-            }
+            if (!char) char = "@";
 
-            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            rctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
 
-            ctx.fillText(
+            rctx.fillText(
                 char,
                 x * charWidth,
                 y * (charHeight / aspectCorrection)
             );
         }
     }
+
+    canvas.width = baseWidth * scale;
+    canvas.height = baseHeight * scale;
+
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.drawImage(
+        renderCanvas,
+        0,
+        0,
+        baseWidth,
+        baseHeight,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
     return canvas.toDataURL();
 }

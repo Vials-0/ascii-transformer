@@ -12,6 +12,7 @@ export default function App() {
     edgeThreshold,
     brightness,
     contrast,
+    scale,
     overlays,
     imageSrc,
     canvasRef,
@@ -22,6 +23,7 @@ export default function App() {
     updateEdge,
     updateBrightness,
     updateContrast,
+    updateScale,
     addOverlay,
     updateOverlay,
     removeOverlay,
@@ -40,12 +42,14 @@ export default function App() {
           edgeThreshold={edgeThreshold}
           brightness={brightness}
           contrast={contrast}
+          scale={scale}
           onColorChange={updateColors}
           onWidthChange={updateWidth}
           onCharsetChange={updateCharset}
           onEdgeChange={updateEdge}
           onBrightnessChange={updateBrightness}
           onContrastChange={updateContrast}
+          onScaleChange={updateScale}
         />
 
         <TextOverlayControls
