@@ -1,40 +1,55 @@
 import { useState, useRef } from "react";
 import { generateASCII } from "../ascii/generateAscii";
+import { applyTextOverlay } from "../overlay/applyTextOverlay";
 
 export default function useAscii() {
   const [colors, setColors] = useState(4);
   const [width, setWidth] = useState(120);
   const [charset, setCharset] = useState("standard");
-  const [edgeThreshold, setEdgeThreshold] = useState(80);
+  const [edgeThreshold, setEdgeThreshold] = useState(100);
   const [brightness, setBrightness] = useState(0);
   const [contrast, setContrast] = useState(0);
+
+  const [overlays, setOverlays] = useState([]);
+
   const [imageSrc, setImageSrc] = useState(null);
 
   const fileRef = useRef(null);
+  const canvasRef = useRef(null);
 
-  const processImage = (
-    file,
-    newColors = colors,
-    newWidth = width,
-    newCharset = charset,
-    newEdge = edgeThreshold,
-    newBrightness = brightness,
-    newContrast = contrast
-  ) => {
+  const processImage = async (file, opts = {}) => {
     const img = new Image();
     img.src = URL.createObjectURL(file);
 
-    img.onload = () => {
-      const result = generateASCII(
+    img.onload = async () => {
+      const ascii = generateASCII(
+        canvasRef.current,
         img,
-        newWidth,
-        newColors,
-        newCharset,
-        newEdge,
-        newBrightness,
-        newContrast
+        opts.width ?? width,
+        opts.colors ?? colors,
+        opts.charset ?? charset,
+        opts.edgeThreshold ?? edgeThreshold,
+        opts.brightness ?? brightness,
+        opts.contrast ?? contrast
       );
-      setImageSrc(result);
+
+      if (!ascii) return;
+
+      let finalImage = ascii;
+
+      const activeOverlays = opts.overlays ?? overlays;
+
+      for (const overlay of activeOverlays) {
+        if (!overlay.text) continue;
+
+        finalImage = await applyTextOverlay(
+          finalImage,
+          overlay.text,
+          overlay.position
+        );
+      }
+
+      setImageSrc(finalImage);
     };
   };
 
@@ -44,40 +59,40 @@ export default function useAscii() {
     processImage(file);
   };
 
-  const updateColors = (val) => {
-    setColors(val);
-    if (fileRef.current)
-      processImage(fileRef.current, val, width, charset, edgeThreshold, brightness, contrast);
+  const rerender = (changes) => {
+    if (!fileRef.current) return;
+    processImage(fileRef.current, changes);
   };
 
-  const updateWidth = (val) => {
-    setWidth(val);
-    if (fileRef.current)
-      processImage(fileRef.current, colors, val, charset, edgeThreshold, brightness, contrast);
+  const addOverlay = () => {
+    const newOverlays = [
+      ...overlays,
+      { text: "", position: "center", expanded: true }
+    ];
+    setOverlays(newOverlays);
+    rerender({ overlays: newOverlays });
   };
 
-  const updateCharset = (val) => {
-    setCharset(val);
-    if (fileRef.current)
-      processImage(fileRef.current, colors, width, val, edgeThreshold, brightness, contrast);
+  const updateOverlay = (index, updated) => {
+    const newOverlays = [...overlays];
+    newOverlays[index] = updated;
+    setOverlays(newOverlays);
+    rerender({ overlays: newOverlays });
   };
 
-  const updateEdge = (val) => {
-    setEdgeThreshold(val);
-    if (fileRef.current)
-      processImage(fileRef.current, colors, width, charset, val, brightness, contrast);
+  const removeOverlay = (index) => {
+    const newOverlays = overlays.filter((_, i) => i !== index);
+    setOverlays(newOverlays);
+    rerender({ overlays: newOverlays });
   };
 
-  const updateBrightness = (val) => {
-    setBrightness(val);
-    if (fileRef.current)
-      processImage(fileRef.current, colors, width, charset, edgeThreshold, val, contrast);
-  };
-
-  const updateContrast = (val) => {
-    setContrast(val);
-    if (fileRef.current)
-      processImage(fileRef.current, colors, width, charset, edgeThreshold, brightness, val);
+  const toggleOverlay = (index, expanded) => {
+    const newOverlays = [...overlays];
+    newOverlays[index] = {
+      ...newOverlays[index],
+      expanded
+    };
+    setOverlays(newOverlays);
   };
 
   return {
@@ -87,13 +102,39 @@ export default function useAscii() {
     edgeThreshold,
     brightness,
     contrast,
+    overlays,
     imageSrc,
+    canvasRef,
     setFile,
-    updateColors,
-    updateWidth,
-    updateCharset,
-    updateEdge,
-    updateBrightness,
-    updateContrast
+
+    updateColors: (v) => {
+      setColors(v);
+      rerender({ colors: v });
+    },
+    updateWidth: (v) => {
+      setWidth(v);
+      rerender({ width: v });
+    },
+    updateCharset: (v) => {
+      setCharset(v);
+      rerender({ charset: v });
+    },
+    updateEdge: (v) => {
+      setEdgeThreshold(v);
+      rerender({ edgeThreshold: v });
+    },
+    updateBrightness: (v) => {
+      setBrightness(v);
+      rerender({ brightness: v });
+    },
+    updateContrast: (v) => {
+      setContrast(v);
+      rerender({ contrast: v });
+    },
+
+    addOverlay,
+    updateOverlay,
+    removeOverlay,
+    toggleOverlay
   };
 }

@@ -131,3 +131,104 @@ img {
   color: black;
   border-color: white;
 }
+
+.text-area {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #111;
+  color: #fff;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.overlay-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background: #0f0f0f;
+}
+
+.overlay-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.overlay-preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  border: 1px solid #333;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.overlay-text {
+  font-size: 13px;
+  color: #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
+}
+
+.overlay-preview-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.overlay-preview-actions button {
+  height: 32px;
+  min-width: 80px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.done-btn,
+.edit-btn,
+.remove-btn {
+  height: 32px;
+  min-width: 80px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.done-btn {
+  background: #1a3;
+  border: 1px solid #3f6;
+  color: #fff;
+}
+
+.edit-btn {
+  background: #222;
+  border: 1px solid #555;
+  color: #fff;
+}
+
+.add-btn {
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.remove-btn {
+  background: #300;
+  color: #fff;
+  border: 1px solid #700;
+}

@@ -2,6 +2,7 @@ import useAscii from "./hooks/useAscii";
 import Controls from "./components/Controls";
 import DropZone from "./components/DropZone";
 import ImagePreview from "./components/ImagePreview";
+import TextOverlayControls from "./components/TextOverlayControls";
 
 export default function App() {
   const {
@@ -11,14 +12,20 @@ export default function App() {
     edgeThreshold,
     brightness,
     contrast,
+    overlays,
     imageSrc,
+    canvasRef,
     setFile,
     updateColors,
     updateWidth,
     updateCharset,
     updateEdge,
     updateBrightness,
-    updateContrast
+    updateContrast,
+    addOverlay,
+    updateOverlay,
+    removeOverlay,
+    toggleOverlay
   } = useAscii();
 
   return (
@@ -41,12 +48,22 @@ export default function App() {
           onContrastChange={updateContrast}
         />
 
+        <TextOverlayControls
+          overlays={overlays}
+          onAddOverlay={addOverlay}
+          onUpdateOverlay={updateOverlay}
+          onRemoveOverlay={removeOverlay}
+          onToggleOverlay={toggleOverlay}
+        />
+
         <DropZone onFile={setFile} />
       </div>
 
       <div className="preview">
         <ImagePreview src={imageSrc} />
       </div>
+
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
 }
