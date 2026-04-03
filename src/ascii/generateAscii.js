@@ -1,6 +1,6 @@
 const CHARSETS = {
     standard: "@%#*+=-:. ",
-    detailed: "@$B%8&WM#*oahkbdpqwmZ0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ",
+    dense: "@$B%8&WM#*oahkbdpqwmZ0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ",
     blocks: "█▓▒░ ",
     minimal: "@#:. "
   };
