@@ -135,6 +135,33 @@ export default function useAscii() {
         scheduleRender({ overlays: newOverlays });
     };
 
+    const saveImage = async () => {
+        if (!imageSrc) return;
+
+        const original = fileRef.current.name.replace(/\.[^.]+$/, "");
+        const suggestedName = `${original}-ascii.png`;
+
+        if (window.showSaveFilePicker) {
+            try {
+                const handle = await window.showSaveFilePicker({
+                    suggestedName,
+                    types: [{ description: "PNG Image", accept: { "image/png": [".png"] } }]
+                });
+                const blob = await (await fetch(imageSrc)).blob();
+                const writable = await handle.createWritable();
+                await writable.write(blob);
+                await writable.close();
+            } catch (err) {
+                if (err.name !== "AbortError") console.error("Failed to save image:", err);
+            }
+        } else {
+            const a = document.createElement("a");
+            a.href = imageSrc;
+            a.download = suggestedName;
+            a.click();
+        }
+    };
+
     const toggleOverlay = (index, expanded) => {
         const newOverlays = [...overlays];
         newOverlays[index] = {
@@ -156,6 +183,7 @@ export default function useAscii() {
         imageSrc,
         canvasRef,
         setFile,
+        saveImage,
         updateColors,
         updateWidth,
         updateCharset,

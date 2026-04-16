@@ -112,6 +112,28 @@ input[type="range"]::-moz-range-thumb {
   border-color: #888;
 }
 
+.save-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-hover);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #2a2a2a;
+}
+
+.save-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 img {
   max-width: 90%;
   max-height: 90%;

@@ -17,6 +17,7 @@ export default function App() {
     imageSrc,
     canvasRef,
     setFile,
+    saveImage,
     updateColors,
     updateWidth,
     updateCharset,
@@ -36,6 +37,14 @@ export default function App() {
         <h1>ASCII Generator</h1>
 
         <DropZone onFile={setFile} />
+
+        <button
+          className="save-btn"
+          disabled={!imageSrc}
+          onClick={saveImage}
+        >
+          Save Image
+        </button>
 
         <Controls
           colors={colors}
