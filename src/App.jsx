@@ -35,6 +35,8 @@ export default function App() {
       <div className="sidebar">
         <h1>ASCII Generator</h1>
 
+        <DropZone onFile={setFile} />
+
         <Controls
           colors={colors}
           width={width}
@@ -60,7 +62,6 @@ export default function App() {
           onToggleOverlay={toggleOverlay}
         />
 
-        <DropZone onFile={setFile} />
       </div>
 
       <div className="preview">
