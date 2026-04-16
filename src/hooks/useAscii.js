@@ -20,9 +20,12 @@ export default function useAscii() {
 
     const processImage = async (file, opts = {}) => {
         const img = new Image();
-        img.src = URL.createObjectURL(file);
+        const objectUrl = URL.createObjectURL(file);
+        img.src = objectUrl;
 
         img.onload = async () => {
+            URL.revokeObjectURL(objectUrl);
+
             const ascii = generateASCII(
                 canvasRef.current,
                 img,
@@ -75,10 +78,45 @@ export default function useAscii() {
         processImage(file);
     };
 
+    const updateColors = (v) => {
+        setColors(v);
+        scheduleRender({ colors: v });
+    };
+
+    const updateWidth = (v) => {
+        setWidth(v);
+        scheduleRender({ width: v });
+    };
+
+    const updateCharset = (v) => {
+        setCharset(v);
+        scheduleRender({ charset: v });
+    };
+
+    const updateEdge = (v) => {
+        setEdgeThreshold(v);
+        scheduleRender({ edgeThreshold: v });
+    };
+
+    const updateBrightness = (v) => {
+        setBrightness(v);
+        scheduleRender({ brightness: v });
+    };
+
+    const updateContrast = (v) => {
+        setContrast(v);
+        scheduleRender({ contrast: v });
+    };
+
+    const updateScale = (v) => {
+        setScale(v);
+        scheduleRender({ scale: v });
+    };
+
     const addOverlay = () => {
         const newOverlays = [
             ...overlays,
-            { text: "", position: "center", color: "#ffffff", expanded: true }
+            { id: Date.now(), text: "", position: "center", color: "#ffffff", expanded: true }
         ];
         setOverlays(newOverlays);
         scheduleRender({ overlays: newOverlays });
@@ -118,36 +156,13 @@ export default function useAscii() {
         imageSrc,
         canvasRef,
         setFile,
-
-        updateColors: (v) => {
-            setColors(v);
-            scheduleRender({ colors: v });
-        },
-        updateWidth: (v) => {
-            setWidth(v);
-            scheduleRender({ width: v });
-        },
-        updateCharset: (v) => {
-            setCharset(v);
-            scheduleRender({ charset: v });
-        },
-        updateEdge: (v) => {
-            setEdgeThreshold(v);
-            scheduleRender({ edgeThreshold: v });
-        },
-        updateBrightness: (v) => {
-            setBrightness(v);
-            scheduleRender({ brightness: v });
-        },
-        updateContrast: (v) => {
-            setContrast(v);
-            scheduleRender({ contrast: v });
-        },
-        updateScale: (v) => {
-            setScale(v);
-            scheduleRender({ scale: v });
-        },
-
+        updateColors,
+        updateWidth,
+        updateCharset,
+        updateEdge,
+        updateBrightness,
+        updateContrast,
+        updateScale,
         addOverlay,
         updateOverlay,
         removeOverlay,

@@ -13,7 +13,7 @@ export default function TextOverlayControls({
             </div>
 
             {overlays.map((overlay, index) => (
-                <div key={index} className="overlay-item">
+                <div key={overlay.id} className="overlay-item">
                     {overlay.expanded ? (
                         <>
                             <textarea
@@ -48,10 +48,7 @@ export default function TextOverlayControls({
                                     (pos) => (
                                         <button
                                             key={pos}
-                                            className={
-                                                "charset-btn " +
-                                                (overlay.position === pos ? "active" : "")
-                                            }
+                                            className={`toggle-btn ${overlay.position === pos ? "active" : ""}`}
                                             onClick={() =>
                                                 onUpdateOverlay(index, {
                                                     ...overlay,

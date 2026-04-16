@@ -1,4 +1,8 @@
+import { useRef } from "react";
+
 export default function DropZone({ onFile }) {
+    const inputRef = useRef(null);
+
     const handleDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
@@ -8,13 +12,13 @@ export default function DropZone({ onFile }) {
     return (
         <div
             className="drop"
-            onClick={() => document.getElementById("fileInput").click()}
+            onClick={() => inputRef.current.click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
         >
             Drop image or click
             <input
-                id="fileInput"
+                ref={inputRef}
                 type="file"
                 accept="image/*"
                 hidden

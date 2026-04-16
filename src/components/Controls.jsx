@@ -31,9 +31,7 @@ export default function Controls({
                     {CHARSET_OPTIONS.map((opt) => (
                         <button
                             key={opt.key}
-                            className={
-                                "charset-btn " + (charset === opt.key ? "active" : "")
-                            }
+                            className={`toggle-btn ${charset === opt.key ? "active" : ""}`}
                             onClick={() => onCharsetChange(opt.key)}
                         >
                             {opt.label}
@@ -112,7 +110,6 @@ export default function Controls({
                 />
             </div>
 
-            {/* ✅ NEW: Scale buttons (placed exactly after sliders) */}
             <div className="control-group">
                 <div className="control-header">
                     <span>Scale</span>
@@ -122,9 +119,7 @@ export default function Controls({
                     {[1, 2, 3, 4].map((s) => (
                         <button
                             key={s}
-                            className={
-                                "charset-btn " + (scale === s ? "active" : "")
-                            }
+                            className={`toggle-btn ${scale === s ? "active" : ""}`}
                             onClick={() => onScaleChange(s)}
                         >
                             {s}x
